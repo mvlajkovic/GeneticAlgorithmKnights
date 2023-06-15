@@ -50,6 +50,15 @@ public class ChessBoard implements GeneticAlgorithm {
         return (row >= 0 && row < boardSize && col >= 0 && col < boardSize);
     }
 
+    private int calculateNoOfKnights(){
+        int res=0;
+        for (int i = 0; i < this.length; i++) {
+            for (int j = 0; j < this.length; j++) {
+                res += this.board[i][j];
+            }
+        }
+        return res;
+    }
     @Override
     public double fitness() {
         //this one should calculate the number of attacks
@@ -103,9 +112,6 @@ public class ChessBoard implements GeneticAlgorithm {
                 }
             }
         }
-        System.out.println("matrix so far");
-        System.out.println(Arrays.deepToString(cross));
-        System.out.println("counter "+ counter);
         //what happens if we have less than required num of knights?
         //well we will replace random zeroes with 1
         while (counter < numOfKnights) {
@@ -126,21 +132,62 @@ public class ChessBoard implements GeneticAlgorithm {
 
     @Override
     public GeneticAlgorithm mutate(double mutationRate) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        int[][] mutation = new int[this.length][this.length];
+        Random rand = new Random();
+        int counter = 0;
+        for (int i = 0; i < this.length; i++) {
+            for (int j = 0; j < this.length; j++) {
+                if(counter < this.numOfKnights){
+                    if(rand.nextDouble()<= mutationRate){
+                        mutation[i][j]=(int) Math.round(Math.random());
+                        if (mutation[i][j] == 1) {
+                            counter++;
+                        }
+                    }
+                    else{
+                        mutation[i][j]=this.board[i][j];
+                        if (mutation[i][j] == 1) {
+                            counter++;
+                        }
+                    }
+                }
+                else {
+                    mutation[i][j]=0;
+                }
+            }
+        }
+        System.out.println("matrix so far");
+        System.out.println(Arrays.deepToString(mutation));
+        System.out.println("counter "+ counter);
+        //what happens if we have less than required num of knights?
+        //well we will replace random zeroes with 1
+        while (counter < numOfKnights) {
+            int i = rand.nextInt(length);
+            System.out.println("i " + i);
+            int j = rand.nextInt(length);
+            System.out.println("j " + j);
+            if (mutation[i][j] == 0) {
+                mutation[i][j] = 1;
+                counter++;
+                
+            }
+            System.out.println("counter " +counter );
+        }
+        
+        ChessBoard tmp = new ChessBoard(mutation);
+        return tmp;
     }
 
     @Override
     public String toString() {
-        int num=0;
         String tmp = "ChessBoard{\n";
         for (int i = 0; i < length; i++) {
             for (int j = 0; j < length; j++) {
                 tmp += board[i][j] + " ";
-                num += board[i][j];
             }
             tmp += "\n";
         }
-        tmp += "} with fitness: " + fitness() + " num of knights: " + num;
+        tmp += "} with fitness: " + fitness() + " num of knights: " + calculateNoOfKnights();
         return tmp;
     }
 
