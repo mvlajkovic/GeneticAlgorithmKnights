@@ -44,7 +44,7 @@ public class ChessBoardATest {
     public void testFitness() {
         System.out.println("fitness");
         int[][] board = {{0,1,1,1,0,1,0,1},{1,0,1,1,0,0,0,0},{1,1,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0}};
-        ChessBoardA instance = new ChessBoardA(board);
+        ChessBoardA instance = new ChessBoardA(board, 10);
         double expResult = 14.0;
         double result = instance.fitness();
         System.out.println(expResult==result);
