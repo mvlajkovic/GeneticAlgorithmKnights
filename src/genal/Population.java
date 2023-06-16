@@ -4,6 +4,7 @@
  */
 package genal;
 
+import java.util.ArrayList;
 import java.util.Random;
 
 /**
@@ -98,6 +99,34 @@ public class Population {
             }
         }
         return tmp;
+    }
+    
+    public BestMatchB getTheBestB(){
+        BestMatchB tmp = new BestMatchB();
+        ArrayList<ChessBoardB> fitOnes  = new ArrayList<>();
+        ArrayList<Integer> index  = new ArrayList<>();
+        
+        for (int i = 0; i < population.length; i++) {
+            if(population[i].fitness()==1.0){
+                fitOnes.add((ChessBoardB)population[i]);
+                index.add(i);
+            }
+        }
+        if(fitOnes.isEmpty()){
+            return null;
+        }
+        else{
+            tmp.setMatch(fitOnes.get(0));
+            tmp.setIndividual(index.get(0));
+            for (int i = 0; i < fitOnes.size(); i++) {
+                if(tmp.getMatch().getNumOfKnights()< fitOnes.get(i).getNumOfKnights()){
+                    tmp.setMatch(fitOnes.get(i));
+                    tmp.setIndividual(index.get(i));
+                }
+            }
+            return tmp;
+        }
+        
     }
 
 }
