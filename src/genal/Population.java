@@ -34,7 +34,7 @@ public class Population {
         totalFitness = 0;
         for (int i = 0; i < this.population.length; i++) {
             fitnessVal[i] = population[i].fitness();
-            System.out.println("indvidiaul " + i + " fitness: " + fitnessVal[i]);
+            //System.out.println("indvidiaul " + i + " fitness: " + fitnessVal[i]);
             totalFitness += fitnessVal[i];
         }
     }
@@ -43,7 +43,7 @@ public class Population {
         // Calculate probability based on the fitness, probability of particle fintess, helps us chose later
         for (int i = 0; i < population.length; i++) {
             probability[i] = fitnessVal[i] / totalFitness;
-            System.out.println("individual " + i + " probability: " + probability[i]);
+            //System.out.println("individual " + i + " probability: " + probability[i]);
         }
     }
 
@@ -53,7 +53,7 @@ public class Population {
         for (int i = 0; i < population.length; i++) {
             tmp += probability[i];
             cumulative[i] = tmp;
-            System.out.println("indvidiual " + i + " cumulative probs: " + tmp);
+            //System.out.println("indvidiual " + i + " cumulative probs: " + tmp);
         }
     }
 
@@ -87,13 +87,13 @@ public class Population {
         return tempArr;
     }
 
-    public BestMatch getTheBest() {
-        BestMatch tmp = new BestMatch();
-        tmp.setMatch((ChessBoard) population[0]);
+    public BestMatchA getTheBestA() {
+        BestMatchA tmp = new BestMatchA();
+        tmp.setMatch((ChessBoardA) population[0]);
         tmp.setIndividual(0);
         for (int i = 1; i < population.length; i++) {
             if (population[i].fitness() > tmp.getMatch().fitness()) {
-                tmp.setMatch((ChessBoard) population[i]);
+                tmp.setMatch((ChessBoardA) population[i]);
                 tmp.setIndividual(i);
             }
         }

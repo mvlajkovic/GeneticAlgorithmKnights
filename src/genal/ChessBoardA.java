@@ -11,17 +11,17 @@ import java.util.Random;
  *
  * @author Milica
  */
-public class ChessBoard implements GeneticAlgorithm {
+public class ChessBoardA implements GeneticAlgorithm {
 
     private static final int[][] MOVES = {{-2, -1}, {-2, 1}, {-1, -2}, {-1, 2},
     {1, -2}, {1, 2}, {2, -1}, {2, 1}};
     //length and numOfKnights can be variable numbers
     int length = 8;
-    int numOfKnights = 10;
+    int numOfKnights;
     int[][] board = new int[length][length];
 
     //target, gene pool?
-    public ChessBoard() {
+    /*public ChessBoardA() {
         //create empty board
         for (int i = 0; i < length; i++) {
             for (int j = 0; j < length; j++) {
@@ -39,18 +39,53 @@ public class ChessBoard implements GeneticAlgorithm {
                 counter++;
             }
         }
+    }*/
+
+    public ChessBoardA(int knights) {
+        this.numOfKnights=knights;
+        //create empty board
+        for (int i = 0; i < length; i++) {
+            for (int j = 0; j < length; j++) {
+                board[i][j] = 0;
+            }
+        }
+        Random random = new Random();
+        int counter = 0;
+        //set knights at random places
+        while (counter < this.numOfKnights) {
+            int i = random.nextInt(length);
+            int j = random.nextInt(length);
+            if (board[i][j] == 0) {
+                board[i][j] = 1;
+                counter++;
+            }
+        }
     }
 
-    public ChessBoard(int[][] board) {
+    public ChessBoardA(int[][] board, int knights) {
         super();
         this.board = board;
+        this.numOfKnights=knights;
     }
 
+    public int getLength() {
+        return length;
+    }
+
+    public int getNumOfKnights() {
+        return numOfKnights;
+    }
+
+    public int[][] getBoard() {
+        return board;
+    }
+
+    
     private static boolean isValidPosition(int row, int col, int boardSize) {
         return (row >= 0 && row < boardSize && col >= 0 && col < boardSize);
     }
 
-    private int calculateNoOfKnights() {
+    public int calculateNoOfKnights() {
         int res = 0;
         for (int i = 0; i < this.length; i++) {
             for (int j = 0; j < this.length; j++) {
@@ -83,7 +118,7 @@ public class ChessBoard implements GeneticAlgorithm {
             // System.out.println("total after row " + i + ": " + attackedCount);
         }
         if (attackedCount == 0) {
-            return 0;
+            return 1.0;
         } else {
             return 1.0 / attackedCount;
         }
@@ -91,7 +126,7 @@ public class ChessBoard implements GeneticAlgorithm {
 
     @Override
     public GeneticAlgorithm[] crossover(GeneticAlgorithm obj) {
-        ChessBoard ref = (ChessBoard) obj;
+        ChessBoardA ref = (ChessBoardA) obj;
         int counterOne = 0;
         int[][] crossOne = new int[this.length][this.length];
         int counterTwo = 0;
@@ -140,31 +175,31 @@ public class ChessBoard implements GeneticAlgorithm {
         //offspring 1
         while (counterOne < numOfKnights) {
             int i = rand.nextInt(length);
-            System.out.println("i " + i);
+            //System.out.println("i " + i);
             int j = rand.nextInt(length);
-            System.out.println("j " + j);
+            //System.out.println("j " + j);
             if (crossOne[i][j] == 0) {
                 crossOne[i][j] = 1;
                 counterOne++;
 
             }
-            System.out.println("counter " + counterOne);
+            //System.out.println("counter " + counterOne);
         }
         //offspring 2
         while (counterTwo < numOfKnights) {
             int i = rand.nextInt(length);
-            System.out.println("i " + i);
+            //System.out.println("i " + i);
             int j = rand.nextInt(length);
-            System.out.println("j " + j);
+            //System.out.println("j " + j);
             if (crossTwo[i][j] == 0) {
                 crossTwo[i][j] = 1;
                 counterTwo++;
 
             }
-            System.out.println("counter " + counterOne);
+            //System.out.println("counter " + counterOne);
         }
 
-        ChessBoard[] tmp = {new ChessBoard(crossOne), new ChessBoard(crossTwo)};
+        ChessBoardA[] tmp = {new ChessBoardA(crossOne, numOfKnights), new ChessBoardA(crossTwo, numOfKnights)};
         return tmp;
     }
 
@@ -192,25 +227,25 @@ public class ChessBoard implements GeneticAlgorithm {
                 }
             }
         }
-        System.out.println("matrix so far");
-        System.out.println(Arrays.deepToString(mutation));
-        System.out.println("counter " + counter);
+        //System.out.println("matrix so far");
+        //System.out.println(Arrays.deepToString(mutation));
+        //System.out.println("counter " + counter);
         //what happens if we have less than required num of knights?
         //well we will replace random zeroes with 1
         while (counter < numOfKnights) {
             int i = rand.nextInt(length);
-            System.out.println("i " + i);
+           // System.out.println("i " + i);
             int j = rand.nextInt(length);
-            System.out.println("j " + j);
+            //System.out.println("j " + j);
             if (mutation[i][j] == 0) {
                 mutation[i][j] = 1;
                 counter++;
 
             }
-            System.out.println("counter " + counter);
+            //System.out.println("counter " + counter);
         }
 
-        ChessBoard tmp = new ChessBoard(mutation);
+        ChessBoardA tmp = new ChessBoardA(mutation, numOfKnights); //mutation as in board
         return tmp;
     }
 

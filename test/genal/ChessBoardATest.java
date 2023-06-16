@@ -16,9 +16,9 @@ import static org.junit.Assert.*;
  *
  * @author Milica
  */
-public class ChessBoardTest {
+public class ChessBoardATest {
     
-    public ChessBoardTest() {
+    public ChessBoardATest() {
     }
     
     @BeforeClass
@@ -38,13 +38,13 @@ public class ChessBoardTest {
     }
 
     /**
-     * Test of fitness method, of class ChessBoard.
+     * Test of fitness method, of class ChessBoardA.
      */
     @Test
     public void testFitness() {
         System.out.println("fitness");
         int[][] board = {{0,1,1,1,0,1,0,1},{1,0,1,1,0,0,0,0},{1,1,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0}};
-        ChessBoard instance = new ChessBoard(board);
+        ChessBoardA instance = new ChessBoardA(board);
         double expResult = 14.0;
         double result = instance.fitness();
         System.out.println(expResult==result);
@@ -55,13 +55,13 @@ public class ChessBoardTest {
     }
 
 //    /**
-//     * Test of crossover method, of class ChessBoard.
+//     * Test of crossover method, of class ChessBoardA.
 //     */
 //    @Test
 //    public void testCrossover() {
 //        System.out.println("crossover");
 //        GeneticAlgorithm obj = null;
-//        ChessBoard instance = new ChessBoard();
+//        ChessBoardA instance = new ChessBoardA();
 //        GeneticAlgorithm expResult = null;
 //        GeneticAlgorithm result = instance.crossover(obj);
 //        assertEquals(expResult, result);
@@ -70,13 +70,13 @@ public class ChessBoardTest {
 //    }
 //
 //    /**
-//     * Test of mutate method, of class ChessBoard.
+//     * Test of mutate method, of class ChessBoardA.
 //     */
 //    @Test
 //    public void testMutate() {
 //        System.out.println("mutate");
 //        double mutationRate = 0.0;
-//        ChessBoard instance = new ChessBoard();
+//        ChessBoardA instance = new ChessBoardA();
 //        GeneticAlgorithm expResult = null;
 //        GeneticAlgorithm result = instance.mutate(mutationRate);
 //        assertEquals(expResult, result);

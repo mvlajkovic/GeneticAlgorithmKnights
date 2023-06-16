@@ -8,31 +8,31 @@ package genal;
  *
  * @author Milica
  */
-public class BestMatch {
-    ChessBoard match;
+public class BestMatchB {
+    ChessBoardB match;
     int generation;
     int individual;
 
-    public BestMatch(ChessBoard match, int generation, int individual) {
+    public BestMatchB(ChessBoardB match, int generation, int individual) {
         this.match = match;
         this.generation = generation;
         this.individual = individual;
     }
 
-    public BestMatch() {
+    public BestMatchB() {
     }
     
-    public BestMatch(BestMatch bm) {
+    public BestMatchB(BestMatchB bm) {
         this.match=bm.match;
         this.individual=bm.individual;
         this.generation=bm.generation;
     }
 
-    public ChessBoard getMatch() {
+    public ChessBoardB getMatch() {
         return match;
     }
 
-    public void setMatch(ChessBoard match) {
+    public void setMatch(ChessBoardB match) {
         this.match = match;
     }
 
@@ -62,6 +62,7 @@ public class BestMatch {
             txt += "\n";
         }
         txt += "} with fitness: " + match.fitness();
+        txt += " and no of knights: " + match.numOfKnights;
         return txt;
     }
     
