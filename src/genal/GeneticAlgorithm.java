@@ -13,7 +13,7 @@ public interface GeneticAlgorithm {
     double fitness();
     
     //crossover with object that called fuction
-    GeneticAlgorithm crossover(GeneticAlgorithm obj);
+    GeneticAlgorithm[] crossover(GeneticAlgorithm obj);
     //same object using mutation - to change its properties, rate 0 - 100
     GeneticAlgorithm mutate(double mutationRate);
 }

@@ -50,8 +50,8 @@ public class ChessBoard implements GeneticAlgorithm {
         return (row >= 0 && row < boardSize && col >= 0 && col < boardSize);
     }
 
-    private int calculateNoOfKnights(){
-        int res=0;
+    private int calculateNoOfKnights() {
+        int res = 0;
         for (int i = 0; i < this.length; i++) {
             for (int j = 0; j < this.length; j++) {
                 res += this.board[i][j];
@@ -59,6 +59,7 @@ public class ChessBoard implements GeneticAlgorithm {
         }
         return res;
     }
+
     @Override
     public double fitness() {
         //this one should calculate the number of attacks
@@ -81,52 +82,89 @@ public class ChessBoard implements GeneticAlgorithm {
             }
             // System.out.println("total after row " + i + ": " + attackedCount);
         }
-        return attackedCount;
-
+        if (attackedCount == 0) {
+            return 0;
+        } else {
+            return 1.0 / attackedCount;
+        }
     }
 
     @Override
-    public GeneticAlgorithm crossover(GeneticAlgorithm obj) {
+    public GeneticAlgorithm[] crossover(GeneticAlgorithm obj) {
         ChessBoard ref = (ChessBoard) obj;
-        int counter = 0;
-        int[][] cross = new int[this.length][this.length];
+        int counterOne = 0;
+        int[][] crossOne = new int[this.length][this.length];
+        int counterTwo = 0;
+        int[][] crossTwo = new int[this.length][this.length];
         Random rand = new Random();
         //go through the board and set parent values while noOfKnights not reached
         for (int i = 0; i < this.length; i++) {
             for (int j = 0; j < this.length; j++) {
-                if (counter < this.numOfKnights) {
+                boolean bool = rand.nextBoolean();
+                //first offspring
+                if (counterOne < this.numOfKnights) {
                     //this will prevent from having more than required num of knights
-                    if (rand.nextBoolean()) {
+                    if (bool) {
                         //we take at random values from first or second board
-                        cross[i][j] = this.board[i][j];
+                        crossOne[i][j] = this.board[i][j];
 
-                        counter += this.board[i][j];
+                        counterOne += this.board[i][j];
 
                     } else {
-                        cross[i][j] = ref.board[i][j];
-                        counter += ref.board[i][j];
+                        crossOne[i][j] = ref.board[i][j];
+                        counterOne += ref.board[i][j];
                     }
+                } else {
+                    crossOne[i][j] = 0;
                 }
-                else {
-                    cross[i][j] = 0;
+                //second offspring
+                if (counterTwo < this.numOfKnights) {
+                    //this will prevent from having more than required num of knights
+                    if (bool) {
+                        //we take at random values from first or second board
+                        crossTwo[i][j] = ref.board[i][j];
+
+                        counterTwo += ref.board[i][j];
+
+                    } else {
+                        crossTwo[i][j] = this.board[i][j];
+                        counterTwo += this.board[i][j];
+                    }
+                } else {
+                    crossTwo[i][j] = 0;
                 }
             }
         }
         //what happens if we have less than required num of knights?
         //well we will replace random zeroes with 1
-        while (counter < numOfKnights) {
+        //offspring 1
+        while (counterOne < numOfKnights) {
             int i = rand.nextInt(length);
             System.out.println("i " + i);
             int j = rand.nextInt(length);
             System.out.println("j " + j);
-            if (cross[i][j] == 0) {
-                cross[i][j] = 1;
-                counter++;
-                
+            if (crossOne[i][j] == 0) {
+                crossOne[i][j] = 1;
+                counterOne++;
+
             }
-            System.out.println("counter " +counter );
+            System.out.println("counter " + counterOne);
         }
-        ChessBoard tmp = new ChessBoard(cross);
+        //offspring 2
+        while (counterTwo < numOfKnights) {
+            int i = rand.nextInt(length);
+            System.out.println("i " + i);
+            int j = rand.nextInt(length);
+            System.out.println("j " + j);
+            if (crossTwo[i][j] == 0) {
+                crossTwo[i][j] = 1;
+                counterTwo++;
+
+            }
+            System.out.println("counter " + counterOne);
+        }
+
+        ChessBoard[] tmp = {new ChessBoard(crossOne), new ChessBoard(crossTwo)};
         return tmp;
     }
 
@@ -137,28 +175,26 @@ public class ChessBoard implements GeneticAlgorithm {
         int counter = 0;
         for (int i = 0; i < this.length; i++) {
             for (int j = 0; j < this.length; j++) {
-                if(counter < this.numOfKnights){
-                    if(rand.nextDouble()<= mutationRate){
-                        mutation[i][j]=(int) Math.round(Math.random());
+                if (counter < this.numOfKnights) {
+                    if (rand.nextDouble() <= mutationRate) {
+                        mutation[i][j] = (int) Math.round(Math.random());
+                        if (mutation[i][j] == 1) {
+                            counter++;
+                        }
+                    } else {
+                        mutation[i][j] = this.board[i][j];
                         if (mutation[i][j] == 1) {
                             counter++;
                         }
                     }
-                    else{
-                        mutation[i][j]=this.board[i][j];
-                        if (mutation[i][j] == 1) {
-                            counter++;
-                        }
-                    }
-                }
-                else {
-                    mutation[i][j]=0;
+                } else {
+                    mutation[i][j] = 0;
                 }
             }
         }
         System.out.println("matrix so far");
         System.out.println(Arrays.deepToString(mutation));
-        System.out.println("counter "+ counter);
+        System.out.println("counter " + counter);
         //what happens if we have less than required num of knights?
         //well we will replace random zeroes with 1
         while (counter < numOfKnights) {
@@ -169,11 +205,11 @@ public class ChessBoard implements GeneticAlgorithm {
             if (mutation[i][j] == 0) {
                 mutation[i][j] = 1;
                 counter++;
-                
+
             }
-            System.out.println("counter " +counter );
+            System.out.println("counter " + counter);
         }
-        
+
         ChessBoard tmp = new ChessBoard(mutation);
         return tmp;
     }
