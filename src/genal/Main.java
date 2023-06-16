@@ -19,7 +19,7 @@ public class Main {
     public static void main(String[] args) {
         //int n = 12;
         int noOfIndividuals = 100;
-        int noOfGen = 1000;
+        int noOfGen = 100;
         double mutationRate = 0.25;
 
         Scanner scan = new Scanner(System.in);
