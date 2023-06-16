@@ -11,6 +11,7 @@ import java.util.Random;
  * @author Milica
  */
 public class Population {
+
     //class that applies all GA functions to the whole population
     private double[] fitnessVal;
     private double[] probability;
@@ -58,7 +59,7 @@ public class Population {
 
     public GeneticAlgorithm randomSelect() {
         Random random = new Random();
-        
+
         //next double generate 0-1 double, if that is less that cumulative it will select that individual. 
         double select = random.nextDouble();
         for (int i = 0; i < population.length; i++) {
@@ -85,6 +86,18 @@ public class Population {
         }
         return tempArr;
     }
-    
-    
+
+    public BestMatch getTheBest() {
+        BestMatch tmp = new BestMatch();
+        tmp.setMatch((ChessBoard) population[0]);
+        tmp.setIndividual(0);
+        for (int i = 1; i < population.length; i++) {
+            if (population[i].fitness() > tmp.getMatch().fitness()) {
+                tmp.setMatch((ChessBoard) population[i]);
+                tmp.setIndividual(i);
+            }
+        }
+        return tmp;
+    }
+
 }

@@ -20,7 +20,7 @@ public class Main {
     }
     
     public static void testGen(){
-
+        BestMatch theBest = new BestMatch();
         System.out.println("FIRST GENERATION");
         int noOfIndividuals = 100;
         ChessBoard[] boards = new ChessBoard[noOfIndividuals];
@@ -30,10 +30,18 @@ public class Main {
             gen[i]= boards[i];
             System.out.println(boards[i].toString());
         }
+        //temp setting the first bord to be the best.
+        theBest.setMatch((ChessBoard) gen[0]);
+        theBest.setIndividual(0);
+        theBest.setGeneration(0);
         System.out.println("NEXT GENERATIONS");
         for (int i = 0; i < 300; i++) {
-            Population pop = new Population(gen, 0.5);
-          
+            Population pop = new Population(gen, 0.7);
+          BestMatch bm = pop.getTheBest();
+          bm.setGeneration(i);
+          if(bm.getMatch().fitness()>theBest.getMatch().fitness()){
+              theBest=bm;
+          }
             //get next gen
             gen = pop.newGeneration();
             //if any is equal to the target(1) return it
@@ -47,7 +55,7 @@ public class Main {
                 }
             }
         }
-
+        System.out.println(theBest.toString());
     }
 
     public static void testMethod(){
